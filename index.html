@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
@@ -10,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
-        /* --- YOUR PROVIDED BASE THEME --- */
+        /* --- BASE THEME --- */
         * {
             margin: 0;
             padding: 0;
@@ -43,6 +42,7 @@
             
             --primary-color: #10b981;
             --primary-hover: #34d399;
+            --primary-glow: rgba(16, 185, 129, 0.4);
             
             --border-color: #27272a;
             --input-bg: #09090b;
@@ -67,6 +67,7 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            overflow-x: hidden;
         }
 
         h1, h2, h3, h4, h5, h6 {
@@ -88,9 +89,22 @@
             background: var(--primary-color);
             color: white;
         }
-
-        /* --- COMING SOON PAGE SPECIFIC STYLES --- */
         
+        /* Scroll Reveal Utility Classes */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .delay-100 { transition-delay: 100ms; }
+        .delay-200 { transition-delay: 200ms; }
+        .delay-300 { transition-delay: 300ms; }
+
         /* Navbar */
         nav {
             padding: 1.5rem 2rem;
@@ -99,7 +113,8 @@
             align-items: center;
             border-bottom: 1px solid var(--border-color);
             background: var(--header-bg);
-            backdrop-filter: blur(8px);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             position: sticky;
             top: 0;
             z-index: 50;
@@ -123,16 +138,18 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
             padding: 4rem 2rem;
-            max-width: 1200px;
+            max-width: 1000px; 
             margin: 0 auto;
             text-align: center;
+            position: relative;
         }
 
         /* Hero Section */
         .badge {
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
             padding: 0.5rem 1rem;
             background: rgba(16, 185, 129, 0.1);
             color: var(--primary-color);
@@ -144,95 +161,235 @@
             letter-spacing: 0.05em;
             text-transform: uppercase;
         }
+        
+        .badge-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--primary-color);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 var(--primary-glow); }
+            70% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
 
         h1 {
-            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            font-size: clamp(2.5rem, 6vw, 5rem);
             margin-bottom: 1.5rem;
-            letter-spacing: -0.02em;
+            letter-spacing: -0.03em;
         }
 
         h1 span {
             color: var(--primary-color);
+            background: linear-gradient(to right, var(--primary-color), #6ee7b7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .subtitle {
             font-size: 1.25rem;
             color: var(--text-secondary);
-            max-width: 600px;
+            max-width: 650px;
             margin: 0 auto 3rem auto;
+            line-height: 1.6;
         }
 
         /* Call to Action Buttons */
         .cta-container {
             display: flex;
-            gap: 1rem;
-            justify-content: center;
-            margin-bottom: 5rem;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 6rem;
         }
 
         .btn {
-            display: inline-block;
-            padding: 1rem 2rem;
-            border-radius: 8px;
-            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 1.1rem 2.5rem;
+            border-radius: 12px;
+            font-weight: 700;
             font-size: 1.125rem;
             cursor: pointer;
             border: none;
+            transition: all 0.3s ease;
         }
 
         .btn-primary {
             background-color: var(--primary-color);
             color: var(--bg-primary);
+            box-shadow: 0 4px 14px 0 rgba(16, 185, 129, 0.39);
         }
 
         .btn-primary:hover {
             background-color: var(--primary-hover);
             transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.6); 
         }
 
-        .btn-secondary {
-            background-color: var(--button-secondary-bg);
-            color: var(--text-primary);
-            border: 1px solid var(--border-color);
+        .cta-microcopy {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
         }
-
-        .btn-secondary:hover {
-            background-color: var(--button-secondary-hover);
+        .cta-microcopy span {
+            color: var(--primary-color);
+            font-weight: 600;
         }
 
         /* Features Section */
+        .features-section {
+            width: 100%;
+            margin-bottom: 6rem;
+        }
+
         .features-header {
             margin-bottom: 3rem;
         }
 
         .features-header h2 {
-            font-size: 2rem;
+            font-size: 2.25rem;
             margin-bottom: 1rem;
         }
 
         .features-header p {
             color: var(--primary-color);
-            font-weight: 600;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Flowchart (3 Pillars) Redesign */
+        .flowchart-container {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            position: relative;
+            width: 100%;
+            margin-top: 3rem;
         }
 
+        /* Desktop horizontal line */
+        @media (min-width: 769px) {
+            .flowchart-container {
+                flex-direction: row;
+            }
+            .flowchart-container::before {
+                content: '';
+                position: absolute;
+                top: 4.5rem; 
+                left: 15%;
+                right: 15%;
+                height: 3px;
+                background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+                opacity: 0.5;
+                z-index: 1;
+            }
+        }
+
+        /* Mobile vertical line */
+        @media (max-width: 768px) {
+            .flowchart-container::before {
+                content: '';
+                position: absolute;
+                left: 50%;
+                top: 5%;
+                bottom: 5%;
+                width: 3px;
+                background: linear-gradient(180deg, transparent, var(--primary-color), transparent);
+                transform: translateX(-50%);
+                opacity: 0.5;
+                z-index: 1;
+            }
+        }
+
+        .flowchart-step {
+            flex: 1;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 2.5rem 2rem;
+            border-radius: 16px;
+            position: relative;
+            z-index: 2;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .step-number {
+            width: 3.5rem;
+            height: 3.5rem;
+            background: var(--bg-primary);
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1.5rem;
+            margin: 0 auto 1.5rem auto;
+            position: relative;
+            z-index: 3;
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .flowchart-step:hover {
+            transform: translateY(-5px);
+            border-color: rgba(16, 185, 129, 0.6);
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
+        }
+        
+        .flowchart-step:hover .step-number {
+            background: var(--primary-color);
+            color: var(--bg-primary);
+            box-shadow: 0 0 25px rgba(16, 185, 129, 0.8);
+            transform: scale(1.1);
+        }
+
+        .flowchart-step h3 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .flowchart-step p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* Standard Features Grid */
         .features-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
+            gap: 1.5rem;
             width: 100%;
         }
 
         .feature-card {
             background: var(--card-bg);
             border: 1px solid var(--border-color);
-            padding: 2.5rem;
-            border-radius: 12px;
+            padding: 2.5rem 2rem;
+            border-radius: 16px;
             text-align: left;
             position: relative;
             overflow: hidden;
+            transition: all 0.3s ease;
         }
 
-        /* Subtle top border accent for cards */
+        .feature-card:hover {
+            border-color: rgba(16, 185, 129, 0.4);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
+        }
+
         .feature-card::before {
             content: '';
             position: absolute;
@@ -240,7 +397,7 @@
             left: 0;
             width: 100%;
             height: 4px;
-            background: var(--primary-color);
+            background: linear-gradient(to right, var(--primary-color), #34d399);
             opacity: 0;
             transition: opacity 0.3s ease;
         }
@@ -250,43 +407,191 @@
         }
 
         .feature-icon {
-            font-size: 2rem;
+            font-size: 2.5rem;
             margin-bottom: 1.5rem;
-            color: var(--primary-color);
+            display: inline-block;
+            padding: 1rem;
+            background: rgba(16, 185, 129, 0.1);
+            border-radius: 12px;
         }
 
         .feature-card h3 {
             font-size: 1.25rem;
             margin-bottom: 1rem;
+            color: var(--text-primary);
         }
 
         .feature-card p {
             color: var(--text-secondary);
-            font-size: 0.95rem;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        /* FAQ Section */
+        .faq-section {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto 6rem auto;
+            text-align: left;
+        }
+        
+        .faq-section h2 {
+            text-align: center;
+            font-size: 2.25rem;
+            margin-bottom: 3rem;
+        }
+
+        .faq-item {
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            background: var(--card-bg);
+            overflow: hidden;
+            transition: border-color 0.3s ease;
+        }
+
+        .faq-item:hover {
+            border-color: rgba(16, 185, 129, 0.3);
+        }
+
+        .faq-question {
+            width: 100%;
+            text-align: left;
+            padding: 1.5rem;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.1rem;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .faq-icon {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            transition: transform 0.3s ease;
+        }
+
+        .faq-item.active .faq-icon {
+            transform: rotate(45deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s cubic-bezier(0, 1, 0, 1);
+        }
+
+        .faq-answer-inner {
+            padding: 0 1.5rem 1.5rem 1.5rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Contact / Feedback Section */
+        .contact-card {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto 6rem auto;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 3.5rem 2rem;
+            text-align: center;
+            transition: border-color 0.3s ease;
+        }
+
+        .contact-card:hover {
+            border-color: rgba(59, 130, 246, 0.4); 
+        }
+
+        .contact-emoji {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: inline-block;
+            animation: wave 2.5s infinite;
+            transform-origin: 70% 70%;
+        }
+
+        @keyframes wave {
+            0% { transform: rotate(0deg); }
+            10% { transform: rotate(14deg); }
+            20% { transform: rotate(-8deg); }
+            30% { transform: rotate(14deg); }
+            40% { transform: rotate(-4deg); }
+            50% { transform: rotate(10deg); }
+            60%, 100% { transform: rotate(0deg); }
+        }
+
+        .contact-card h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .contact-card p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-bottom: 2.5rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+
+        /* Bottom CTA */
+        .bottom-cta {
+            width: 100%;
+            background: linear-gradient(180deg, var(--card-bg) 0%, rgba(16, 185, 129, 0.05) 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 4rem 2rem;
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .bottom-cta h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .bottom-cta p {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
         }
 
         /* Footer */
         footer {
-            padding: 2rem;
+            padding: 2.5rem;
             text-align: center;
             border-top: 1px solid var(--border-color);
             color: var(--text-secondary);
             font-size: 0.875rem;
             background: var(--footer-bg);
+            margin-top: auto;
+        }
+        
+        .footer-disclaimer {
+            margin-top: 1.5rem;
+            font-size: 0.75rem;
+            opacity: 0.7;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
         }
 
         /* Responsive adjustments */
-        @media (max-width: 640px) {
-            .cta-container {
-                flex-direction: column;
-                width: 100%;
-                max-width: 300px;
-                margin-left: auto;
-                margin-right: auto;
-            }
-            .btn {
-                width: 100%;
-            }
+        @media (max-width: 768px) {
+            nav { padding: 1rem; }
+            main { padding: 3rem 1.5rem; }
+            h1 { font-size: 2.5rem; }
+            .features-grid { grid-template-columns: 1fr; }
+            .bottom-cta, .contact-card { padding: 3rem 1.5rem; }
         }
     </style>
 </head>
@@ -294,85 +599,242 @@
 
     <nav>
         <div class="logo">
-	    <img src="PNG-logo.svg" alt="TradeAuditPro Logo" class="logo-icon" width="300" height="50">
+            <img src="PNG-logo.svg" alt="TradeAuditPro Logo" class="logo-icon" width="300" height="50">
         </div>
         <div class="nav-links">
-            <a href="mailto:support@tradeauditpro.com" style="color: var(--text-secondary); font-size: 0.9rem;">Contact Support</a>
+            <a href="mailto:support@tradeauditpro.com" style="color: var(--text-secondary); font-size: 0.95rem; font-weight: 500;">Contact Support</a>
         </div>
     </nav>
 
     <main>
-        <div class="badge">Platform Launching Soon</div>
+        <div class="badge reveal">
+            <div class="badge-dot"></div>
+            Platform Launching Soon
+        </div>
         
-        <h1>Stop Journaling <span>Start Auditing</span></h1>
+        <h1 class="reveal delay-100">Stop Journaling. <br><span>Start Auditing.</span></h1>
         
-        <p class="subtitle">
+        <p class="subtitle reveal delay-200">
             The professional trade auditing platform designed to track, analyze, and optimize your market performance with pinpoint accuracy and user-friendly convenience.
         </p>
 
-        <div class="cta-container">
-            <a href="https://forms.gle/EFvnMrtj4wtZ5xir7" target="_blank" class="btn btn-primary">Join the Early Access Waitlist</a>
+        <div class="cta-container reveal delay-300">
+            <a href="https://forms.gle/EFvnMrtj4wtZ5xir7" target="_blank" class="btn btn-primary">
+                Join the Early Access Waitlist
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </a>
+            <p class="cta-microcopy">✨ Lock in your spot for a <span>50% discount</span> on launch</p>
         </div>
-
         
-	<div class="features-header">
-            <p>Most journals are graveyards for data. TradeAudit Pro is a laboratory for growth</p>
-            <h2>The 3 Pillars of Auditing your Trade Journey</h2>
+        <!-- 3 Pillars Flowchart Section -->
+        <div class="features-section reveal">
+            <div class="features-header">
+                <p>Most journals are graveyards for data. TradeAudit Pro is a laboratory for growth.</p>
+                <h2>The 3 Pillars of Auditing your Trade Journey</h2>
+            </div>
+
+            <div class="flowchart-container">
+                <div class="flowchart-step reveal delay-100">
+                    <div class="step-number">1</div>
+                    <div class="feature-icon" style="background:none; padding:0; margin-bottom: 0.5rem;">📝</div>
+                    <h3>Execution Log</h3>
+                    <p>Most traders lose money because of "randomness". Log and Audit your executions so you can see exactly where and when discipline breaks down. Build and analyse your own trading system.</p>
+                </div>
+
+                <div class="flowchart-step reveal delay-200">
+                    <div class="step-number">2</div>
+                    <div class="feature-icon" style="background:none; padding:0; margin-bottom: 0.5rem;">📊</div>
+                    <h3>Analytical Intelligence</h3>
+                    <p>Risk-to-Reward (R:R), Drawdown analysis, Equity Curve, Win Rate, etc. Audit all the insights a trader must need to know about his trading performance.</p>
+                </div>
+
+                <div class="flowchart-step reveal delay-300">
+                    <div class="step-number">3</div>
+                    <div class="feature-icon" style="background:none; padding:0; margin-bottom: 0.5rem;">🧠</div>
+                    <h3>Psychological Forensic</h3>
+                    <p>Tag trades by "State of Mind" (FOMO, Revenge, Greed, Fear) to audit patterns in your mistakes. Find out if you’re losing money because of the market, or because of your Tuesday morning coffee.</p>
+                </div>
+            </div>
         </div>
 
-        <div class="features-grid">
+        <div class="features-section reveal">
+            <div class="features-header">
+                <p>Built by traders, for traders</p>
+                <h2>Everything you need to analyze your Trading Journey.</h2>
+            </div>
+
+            <div class="features-grid">
+                <!-- 1: Comprehensive Dashboard -->
+                <div class="feature-card">
+                    <div class="feature-icon">💻</div>
+                    <h3>Comprehensive Dashboard</h3>
+                    <p>Gain instant insights with day-wise performance calculations and powerful filtering options (7d, 30d, 90d, YTD) to view your equity curve.</p>
+                </div>
+                
+                <!-- 2: Limitless Pattern Filtering -->
+                <div class="feature-card">
+                    <div class="feature-icon">🎛️</div>
+                    <h3>Limitless Pattern Filtering</h3>
+                    <p>Discover your hidden edge with infinite "What-If" scenarios. What if you never traded on Expiry? What if you only took Longs? What if you only traded after 10 AM? Slice your data to isolate exactly what makes you profitable.</p>
+                </div>
+
+                <!-- 3: Detailed Trade Log -->
+                <div class="feature-card">
+                    <div class="feature-icon">🔍</div>
+                    <h3>Detailed Trade Log</h3>
+                    <p>Record every granular detail. Our advanced 17-column log tracks dates, scripts, execution times, quantities, and personal remarks to build a complete trading history.</p>
+                </div>
+
+                <!-- 4: Secure & Reliable -->
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <h3>Secure & Reliable</h3>
+                    <p>Your data is yours. Built with robust backend architecture and secure authentication so you can focus on trading without worrying about your log.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- FAQ Section -->
+        <div class="faq-section reveal">
+            <h2>Frequently Asked Questions</h2>
             
-            <div class="feature-card">
-                <div class="feature-icon">📝</div>
-                <h3>Execution Log</h3>
-                <p>Most traders lose money because of "randomness". Log and Audit your executions so you can see exactly where and when discipline breaks down. Build and analyse your own trading system.</p>
+            <div class="faq-item">
+                <button class="faq-question">
+                    What makes TradeAudit Pro different from a regular trading journal?
+                    <span class="faq-icon">+</span>
+                </button>
+                <div class="faq-answer">
+                    <div class="faq-answer-inner">
+                        Most journals just record data. TradeAudit Pro is designed to audit your behaviour. We focus on identifying psychological patterns and execution errors that traditional spreadsheets miss, helping you move from recording trades to refining your edge.
+                    </div>
+                </div>
             </div>
 
-            <div class="feature-card">
-                <div class="feature-icon">📊</div>
-                <h3>Analytical Intelligence</h3>
-                <p>Risk-to-Reward (R:R), Drawdown analysis, Equity Curve, Win Rate, etc. Audit all the insights a trader must need to know about his trading performance.</p>
+            <div class="faq-item">
+                <button class="faq-question">
+                    Is TradeAudit Pro suitable for beginners?
+                    <span class="faq-icon">+</span>
+                </button>
+                <div class="faq-answer">
+                    <div class="faq-answer-inner">
+                        Absolutely. While the insights are professional-grade, the interface is designed to be intuitive. If you can place a trade, you can audit it with us.
+                    </div>
+                </div>
             </div>
 
-            <div class="feature-card">
-                <div class="feature-icon">🧠</div>
-                <h3>Psychological Forensic</h3>
-                <p>Tag trades by "State of Mind" (FOMO, Revenge, Greed, Fear) to audit patterns in your mistakes. Find out if you’re losing money because of the market, or because of your Tuesday morning coffee.</p>
+            <div class="faq-item">
+                <button class="faq-question">
+                    Which markets are supported?
+                    <span class="faq-icon">+</span>
+                </button>
+                <div class="faq-answer">
+                    <div class="faq-answer-inner">
+                        Currently, we are optimised for the Indian Market (NSE & BSE), specifically for Equity, Futures, and Options (F&O) traders.
+                    </div>
+                </div>
             </div>
 
+            <div class="faq-item">
+                <button class="faq-question">
+                    Do I need to connect my broker account?
+                    <span class="faq-icon">+</span>
+                </button>
+                <div class="faq-answer">
+                    <div class="faq-answer-inner">
+                        No. TradeAudit Pro does not require direct broker access. You can upload trade data via CSV or enter trades manually. Direct API integrations may be introduced in the future.
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    Does TradeAudit Pro provide trading signals or advice?
+                    <span class="faq-icon">+</span>
+                </button>
+                <div class="faq-answer">
+                    <div class="faq-answer-inner">
+                        No. TradeAudit Pro does not provide trading signals, recommendations, or financial advice. The platform is designed solely to help traders analyse and review their own trading performance.
+                    </div>
+                </div>
+            </div>
         </div>
 
-	<div class="features-header">
-            <p><br><br><br>BUILT BY TRADERS, FOR TRADERS</p>
-            <h2>Everything you need to analyze your Trading Journey.</h2>
+        <!-- NEW: Contact / Feedback Section -->
+        <div class="contact-card reveal">
+            <span class="contact-emoji">👋</span>
+            <h2>Got Feedback or Questions?</h2>
+            <p>We are building TradeAudit Pro alongside the trading community. Whether you have a specific feature request, a lingering doubt, or just want to chat about your trading journey—we are all ears.</p>
+            <a href="mailto:support@tradeauditpro.com" class="btn btn-secondary" style="background-color: var(--button-secondary-bg); color: var(--text-primary); border: 1px solid var(--border-color); display: inline-flex; align-items: center; gap: 8px;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                    <polyline points="22,6 12,13 2,6"></polyline>
+                </svg>
+                Contact Us
+            </a>
         </div>
 
-        <div class="features-grid">
-            
-            <div class="feature-card">
-                <div class="feature-icon">📊</div>
-                <h3>Comprehensive Dashboard</h3>
-                <p>Gain instant insights with day-wise performance calculations and powerful filtering options (7d, 30d, 90d, YTD) to view your equity curve.</p>
-            </div>
-
-            <div class="feature-card">
-                <div class="feature-icon">📝</div>
-                <h3>Detailed Trade Log</h3>
-                <p>Record every granular detail. Our advanced 17-column log tracks dates, scripts, execution times, quantities, and personal remarks to build a complete trading history.</p>
-            </div>
-
-            <div class="feature-card">
-                <div class="feature-icon">🔒</div>
-                <h3>Secure & Reliable</h3>
-                <p>Your data is yours. Built with robust backend architecture and secure authentication so you can focus on trading without worrying about your log.</p>
-            </div>
-
+        <!-- Bottom CTA -->
+        <div class="bottom-cta reveal">
+            <h2>Ready to find your edge?</h2>
+            <p>Join the waitlist today. Early users get a 50% discount and a 30-day free trial.</p>
+            <a href="https://forms.gle/EFvnMrtj4wtZ5xir7" target="_blank" class="btn btn-primary">
+                Reserve My Spot
+            </a>
         </div>
     </main>
 
     <footer>
         <p>&copy; 2026 TradeAudit Pro. All rights reserved.</p>
+        <p class="footer-disclaimer">
+            Disclaimer: TradeAudit Pro is an independent journaling and analytics platform designed to help traders analyze their own data. We are not registered with SEBI as an Investment Advisor or Research Analyst. We do not provide any trading signals, tips, financial advice, or recommendations. Trading in the securities markets involves significant risk.
+        </p>
     </footer>
 
+    <!-- Javascript for Interactions -->
+    <script>
+        // --- SCROLL REVEAL ANIMATION ---
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target); 
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach(element => {
+            observer.observe(element);
+        });
+
+        // --- FAQ ACCORDION ---
+        const faqItems = document.querySelectorAll('.faq-item');
+
+        faqItems.forEach(item => {
+            const questionBtn = item.querySelector('.faq-question');
+            const answer = item.querySelector('.faq-answer');
+            
+            questionBtn.addEventListener('click', () => {
+                const isActive = item.classList.contains('active');
+                
+                // Close all other FAQs 
+                faqItems.forEach(otherItem => {
+                    otherItem.classList.remove('active');
+                    otherItem.querySelector('.faq-answer').style.maxHeight = null;
+                });
+
+                // Open clicked FAQ
+                if (!isActive) {
+                    item.classList.add('active');
+                    answer.style.maxHeight = answer.scrollHeight + "px";
+                }
+            });
+        });
+    </script>
 </body>
 </html>
