@@ -8,6 +8,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
     <style>
         /* --- BASE THEME --- */
         * {
@@ -130,7 +133,7 @@
         }
 
         .logo-icon {
-            height: 56px; /* Increased height for better visibility */
+            height: 56px; 
             width: auto;
             max-width: 100%;
             object-fit: contain;
@@ -252,6 +255,124 @@
             font-weight: 600;
         }
 
+        /* --- DASHBOARD TEASER MOCKUP --- */
+        .dashboard-teaser.reveal {
+            opacity: 0;
+            transform: perspective(1000px) rotateX(8deg) translateY(40px) scale(0.96);
+            transition: all 1s cubic-bezier(0.5, 0, 0, 1);
+        }
+        
+        .dashboard-teaser.reveal.active {
+            opacity: 1;
+            transform: perspective(1000px) rotateX(0deg) translateY(0) scale(1);
+        }
+
+        .dashboard-teaser {
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto 5rem auto;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(16, 185, 129, 0.05);
+            transition: transform 1s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 1s ease, box-shadow 0.5s ease;
+        }
+
+        .dashboard-teaser:hover {
+            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(16, 185, 129, 0.2);
+        }
+
+        .teaser-header {
+            background: var(--bg-primary);
+            padding: 1rem 1.25rem;
+            display: flex;
+            gap: 8px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .teaser-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .teaser-body {
+            display: flex;
+            height: 380px;
+            background: var(--bg-secondary);
+        }
+
+        .teaser-sidebar {
+            width: 220px;
+            border-right: 1px solid var(--border-color);
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .skeleton-block {
+            height: 10px;
+            background: var(--border-color);
+            border-radius: 4px;
+            width: 100%;
+        }
+        .skeleton-block.title { width: 50%; height: 14px; margin-bottom: 1rem; background: var(--text-secondary); opacity: 0.5; }
+        .skeleton-block.short { width: 70%; }
+
+        .teaser-main {
+            flex: 1;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .teaser-stats {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .teaser-stat-card {
+            flex: 1;
+            height: 70px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 0 1rem;
+            gap: 8px;
+        }
+        .teaser-stat-card.highlight {
+            background: rgba(16, 185, 129, 0.05);
+            border-color: rgba(16, 185, 129, 0.2);
+        }
+
+        .skeleton-stat-title { height: 8px; width: 40%; background: var(--text-secondary); opacity: 0.3; border-radius: 4px; }
+        .skeleton-stat-value { height: 16px; width: 60%; background: var(--text-primary); opacity: 0.8; border-radius: 4px; }
+        .teaser-stat-card.highlight .skeleton-stat-value { background: var(--primary-color); opacity: 1; }
+
+        .teaser-chart-container {
+            flex: 1;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .teaser-chart-grid {
+            position: absolute;
+            inset: 0;
+            background-size: 40px 40px;
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+        }
+
         /* Features Section */
         .features-section {
             width: 100%;
@@ -319,6 +440,11 @@
                 opacity: 0.5;
                 z-index: 1;
             }
+            
+            /* Responsive Teaser hiding rules */
+            .teaser-sidebar { display: none; }
+            .teaser-body { height: 250px; }
+            .teaser-stat-card:nth-child(3) { display: none; } /* Hide one stat card on mobile to fit */
         }
 
         .flowchart-step {
@@ -419,12 +545,20 @@
         }
 
         .feature-icon {
-            font-size: 2.5rem;
             margin-bottom: 1.5rem;
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
             padding: 1rem;
             background: rgba(16, 185, 129, 0.1);
             border-radius: 12px;
+            color: var(--primary-color);
+        }
+        
+        .feature-icon svg {
+            width: 2.5rem;
+            height: 2.5rem;
+            stroke-width: 1.5;
         }
 
         .feature-card h3 {
@@ -600,7 +734,7 @@
         /* Responsive adjustments */
         @media (max-width: 768px) {
             nav { padding: 1rem; }
-            .logo-icon { height: 40px; } /* Increased mobile height */
+            .logo-icon { height: 40px; } 
             main { padding: 2.5rem 1.5rem; }
             h1 { font-size: 2.5rem; }
             .features-grid { grid-template-columns: 1fr; }
@@ -639,6 +773,57 @@
             </a>
             <p class="cta-microcopy">✨ Lock in your spot for a <span>50% discount</span> on launch</p>
         </div>
+
+        <!-- Dashboard Teaser Mockup -->
+        <div class="dashboard-teaser reveal delay-200">
+            <div class="teaser-header">
+                <div class="teaser-dot" style="background:#ff5f56;"></div>
+                <div class="teaser-dot" style="background:#ffbd2e;"></div>
+                <div class="teaser-dot" style="background:#27c93f;"></div>
+            </div>
+            <div class="teaser-body">
+                <div class="teaser-sidebar">
+                    <div class="skeleton-block title"></div>
+                    <div class="skeleton-block"></div>
+                    <div class="skeleton-block short"></div>
+                    <div class="skeleton-block"></div>
+                    <div class="skeleton-block short" style="margin-top: 1.5rem;"></div>
+                    <div class="skeleton-block"></div>
+                </div>
+                <div class="teaser-main">
+                    <div class="teaser-stats">
+                        <div class="teaser-stat-card">
+                            <div class="skeleton-stat-title"></div>
+                            <div class="skeleton-stat-value"></div>
+                        </div>
+                        <div class="teaser-stat-card highlight">
+                            <div class="skeleton-stat-title"></div>
+                            <div class="skeleton-stat-value"></div>
+                        </div>
+                        <div class="teaser-stat-card">
+                            <div class="skeleton-stat-title"></div>
+                            <div class="skeleton-stat-value"></div>
+                        </div>
+                    </div>
+                    <div class="teaser-chart-container">
+                        <div class="teaser-chart-grid"></div>
+                        <svg viewBox="0 0 100 100" preserveAspectRatio="none" style="position: absolute; width: 100%; height: 100%; bottom: 0; left: 0;">
+                            <defs>
+                                <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" stop-color="var(--primary-color)" stop-opacity="0.25"/>
+                                    <stop offset="100%" stop-color="var(--primary-color)" stop-opacity="0"/>
+                                </linearGradient>
+                            </defs>
+                            <path d="M0,100 L0,65 Q15,45 30,55 T65,25 T100,10 L100,100 Z" fill="url(#chartGrad)"/>
+                            <path d="M0,65 Q15,45 30,55 T65,25 T100,10" fill="none" stroke="var(--primary-color)" stroke-width="2.5" stroke-linecap="round"/>
+                            <circle cx="100" cy="10" r="2" fill="var(--primary-color)">
+                                <animate attributeName="r" values="2;4;2" dur="2s" repeatCount="indefinite" />
+                            </circle>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
         
         <!-- 3 Pillars Flowchart Section -->
         <div class="features-section reveal">
@@ -650,21 +835,27 @@
             <div class="flowchart-container">
                 <div class="flowchart-step reveal delay-100">
                     <div class="step-number">1</div>
-                    <div class="feature-icon" style="background:none; padding:0; margin-bottom: 0.5rem;">📝</div>
+                    <div class="feature-icon" style="background:none; padding:0; margin-bottom: 0.5rem;">
+                        <i data-lucide="clipboard-list"></i>
+                    </div>
                     <h3>Execution Log</h3>
                     <p>Most traders lose money because of "randomness". Log and Audit your executions so you can see exactly where and when discipline breaks down. Build and analyse your own trading system.</p>
                 </div>
 
                 <div class="flowchart-step reveal delay-200">
                     <div class="step-number">2</div>
-                    <div class="feature-icon" style="background:none; padding:0; margin-bottom: 0.5rem;">📊</div>
+                    <div class="feature-icon" style="background:none; padding:0; margin-bottom: 0.5rem;">
+                        <i data-lucide="bar-chart-2"></i>
+                    </div>
                     <h3>Analytical Intelligence</h3>
                     <p>Risk-to-Reward (R:R), Drawdown analysis, Equity Curve, Win Rate, etc. Audit all the insights a trader must need to know about his trading performance.</p>
                 </div>
 
                 <div class="flowchart-step reveal delay-300">
                     <div class="step-number">3</div>
-                    <div class="feature-icon" style="background:none; padding:0; margin-bottom: 0.5rem;">🧠</div>
+                    <div class="feature-icon" style="background:none; padding:0; margin-bottom: 0.5rem;">
+                        <i data-lucide="brain-circuit"></i>
+                    </div>
                     <h3>Psychological Forensic</h3>
                     <p>Tag trades by "State of Mind" (FOMO, Revenge, Greed, Fear) to audit patterns in your mistakes. Find out if you’re losing money because of the market, or because of your Tuesday morning coffee.</p>
                 </div>
@@ -680,28 +871,36 @@
             <div class="features-grid">
                 <!-- 1: Comprehensive Dashboard -->
                 <div class="feature-card">
-                    <div class="feature-icon">💻</div>
+                    <div class="feature-icon">
+                        <i data-lucide="layout-dashboard"></i>
+                    </div>
                     <h3>Comprehensive Dashboard</h3>
                     <p>Gain instant insights with day-wise performance calculations and powerful filtering options (7d, 30d, 90d, YTD) to view your equity curve.</p>
                 </div>
                 
                 <!-- 2: Limitless Pattern Filtering -->
                 <div class="feature-card">
-                    <div class="feature-icon">🎛️</div>
+                    <div class="feature-icon">
+                        <i data-lucide="sliders-horizontal"></i>
+                    </div>
                     <h3>Limitless Pattern Filtering</h3>
                     <p>Discover your hidden edge with infinite "What-If" scenarios. What if you never traded on Expiry? What if you only took Longs? What if you only traded after 10 AM? Slice your data to isolate exactly what makes you profitable.</p>
                 </div>
 
                 <!-- 3: Detailed Trade Log -->
                 <div class="feature-card">
-                    <div class="feature-icon">🔍</div>
+                    <div class="feature-icon">
+                        <i data-lucide="file-search"></i>
+                    </div>
                     <h3>Detailed Trade Log</h3>
                     <p>Record every granular detail. Our advanced 17-column log tracks dates, scripts, execution times, quantities, and personal remarks to build a complete trading history.</p>
                 </div>
 
                 <!-- 4: Secure & Reliable -->
                 <div class="feature-card">
-                    <div class="feature-icon">🔒</div>
+                    <div class="feature-icon">
+                        <i data-lucide="shield-check"></i>
+                    </div>
                     <h3>Secure & Reliable</h3>
                     <p>Your data is yours. Built with robust backend architecture and secure authentication so you can focus on trading without worrying about your log.</p>
                 </div>
@@ -773,7 +972,7 @@
             </div>
         </div>
 
-        <!-- NEW: Contact / Feedback Section -->
+        <!-- Contact / Feedback Section -->
         <div class="contact-card reveal">
             <span class="contact-emoji">👋</span>
             <h2>Got Feedback or Questions?</h2>
@@ -806,6 +1005,9 @@
 
     <!-- Javascript for Interactions -->
     <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
         // --- SCROLL REVEAL ANIMATION ---
         const observerOptions = {
             root: null,
